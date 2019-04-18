@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
+#include "reader/CreatorReader.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -93,11 +94,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+	creator::CreatorReader* reader = creator::CreatorReader::createWithFilename("creator/Scene/helloworld.ccreator");
 
-    // run
-    director->runWithScene(scene);
+	// will create the needed spritesheets + design resolution
+	reader->setup();
+	// get the scene graph
+	Scene* scene = reader->getSceneGraph();
+	director->runWithScene(scene);
 
     return true;
 }
